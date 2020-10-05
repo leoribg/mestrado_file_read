@@ -19,14 +19,14 @@ int main(int argc, char *argv[])
     uint32_t counter;
     char str[80];
 
-    meas_file = fopen("meas.txt", "w+");
+    meas_file = fopen("../mestrado_file_plot/meas.txt", "w+");
+    //meas_file = fopen("meas.txt", "w+");
 
     for (int i = 1; i < argc; i++)
     {
         counter = 0;
         mean = 0;
 
-        printf("argc %d:\n", i);
         printf("argv %d: %s\n", i, argv[i]);
 
         /* To calculate signal mean power from file */
@@ -48,12 +48,17 @@ int main(int argc, char *argv[])
             }
         }
         mean /= counter;
-        printf("final mean %02f\n", mean);
-        sprintf(str, "%d,%f\n", i, mean);
-        fwrite(str , 1 , 13 , meas_file );
+        //printf("final mean %02f\n", mean);
+        sprintf(str, "%02d,%f\n", (i - 1), mean);
+        printf("%s", str);
+        if(i < 100) {
+            fwrite(str , 1 , 14 , meas_file );
+        }
+            
+        memset(str, 0x00, 80);
         fclose(fp);
     }
-
+    fclose(meas_file);
     if (line)
         free(line);
     exit(EXIT_SUCCESS);
