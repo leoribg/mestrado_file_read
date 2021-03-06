@@ -18,11 +18,10 @@ for i in range (9022, 9280, 2):
         #print(i)
 print(s)
 
-    #if(i < 9075 or i > 9150):
-        #s = "timeout 14 python teste_leo.py --center-freq=" + str(i * 100000) + " --filename=" + str(i) + ".txt"
-        #main(902800000, 9028)
-        #print(s)
-        #os.system(s)
-        #time.sleep(16)
-        #print(s)
-    
+
+s = "./program"
+for i in range (9022, 9280, 2):
+    if (i < 9074 or i > 9150) :
+        s += " " + str(i) + ".txt"
+        #print(i)
+print(s)
