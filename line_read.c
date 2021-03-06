@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
         sprintf(str, "%02d,%f,%03d\n", (i - 1), mean, occupancy);
         printf("%s", str);
         if(i < 100) {
-            fwrite(str , 1 , 18 , meas_file );
+            fwrite(str , 1 , strlen(str) , meas_file );
         }
             
         memset(str, 0x00, 80);
