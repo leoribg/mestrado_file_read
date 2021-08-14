@@ -8,6 +8,9 @@
 #define LSIZ 128
 #define RSIZ 10
 
+#define NOISE_FLOOR (-150)
+#define BUSY_LEVEL (-85)
+
 int main(int argc, char *argv[])
 {
     FILE *fp;
@@ -22,8 +25,12 @@ int main(int argc, char *argv[])
     uint32_t occ_counter = 0;
     uint8_t occupancy = 0;
 
-    meas_file = fopen("../mestrado_file_plot/meas.txt", "w+");
+    meas_file = fopen("../mestrado_file_plot/meas.txt", "w+"); // file to save channel average power and occupancy
     //meas_file = fopen("meas.txt", "w+");
+
+    if(argc == 1) {
+        printf("No channel measures files were specified");
+    }
 
     for (int i = 1; i < argc; i++)
     {
@@ -46,23 +53,23 @@ int main(int argc, char *argv[])
             {
                 float j = atof(line);
                 //printf("%02f\n", i);
-                if(j > (-150)) {
+                if(j > NOISE_FLOOR) {
                     counter++;
                     mean += j;
                 }
-                if(j > (-65)) {
+                if(j > BUSY_LEVEL) {
                     occ_counter++;
                 }
                 //printf("mean %02f\n", mean);
             }
         }
         mean /= counter;
-        occupancy = (occ_counter/counter) * 100;
+        occupancy = (occ_counter * 100) / counter;
         //printf("occupancy: %02d \n", occupancy);
         //printf("final mean %02f\n", mean);
         sprintf(str, "%02d,%f,%03d\n", (i - 1), mean, occupancy);
         printf("%s", str);
-        if(i < 100) {
+        if(i < 100) { //SANITY CHECK FOR MAXIMUM CHANNELS
             fwrite(str , 1 , strlen(str) , meas_file );
         }
             
